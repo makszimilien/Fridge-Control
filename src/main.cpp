@@ -16,14 +16,13 @@ float setValue = 0.0;
 unsigned long prevChangeMillis = 0;
 const long backlightTimeout = 5000;
 
-int minTemp = 20;
-int maxTemp = 30;
-// int minTemp = -20;
-// int maxTemp = -16;
+int minTemp = -22;
+int maxTemp = -14;
 
 const int tempPin = 4;
 const int potPin = A0;
 const int ssrPin = 5;
+const int ledPin = 6;
 
 // Setup a oneWire instance to communicate with any OneWire devices
 OneWire oneWire(tempPin);
@@ -36,7 +35,7 @@ LiquidCrystal_I2C lcd(0x27, 16, 2);
 
 void writeLcd() {
 
-  setValue = map(potValueCurr, 0, 1024, maxTemp * 100, minTemp * 100) / 100.0;
+  setValue = map(potValueCurr, 1024, 0, maxTemp * 100, minTemp * 100) / 100.0;
 
   lcd.backlight();
   lcd.clear();
@@ -62,6 +61,8 @@ void setup() {
   sensors.begin();
   // Set IOs
   pinMode(A0, INPUT);
+  pinMode(ssrPin, OUTPUT);
+  pinMode(ledPin, OUTPUT);
 
   // Set up LCD
   lcd.init(); // initialize the lcd
@@ -98,4 +99,5 @@ void loop() {
   }
 
   digitalWrite(ssrPin, cooolingOn);
+  digitalWrite(ledPin, cooolingOn);
 }
